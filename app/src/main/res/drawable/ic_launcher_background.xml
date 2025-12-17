@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Turquoise circle background -->
+    <path
+        android:fillColor="#4DB6AC"
+        android:pathData="M54,2A52,52 0 1,1 2,54A52,52 0 0,1 54,2Z" />
+
+</vector>
