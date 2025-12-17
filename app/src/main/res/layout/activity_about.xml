@@ -129,23 +129,28 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="12dp"/>
 
+                    <!-- Clickable GitHub Link -->
                     <TextView
                         android:id="@+id/textViewGitHub"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="https://github.com/nrainablqsz/IndividualAssignmentICT602"
                         android:textSize="14sp"
                         android:textColor="@color/secondary_color"
+                        android:textStyle="bold"
                         android:padding="12dp"
-                        android:background="@color/white"
+                        android:background="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:textStyle="bold"/>
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Click to open repository"
+                        android:text="Click the link above to open repository"
                         android:textSize="12sp"
                         android:textColor="@color/text_color"
                         android:layout_marginTop="8dp"
