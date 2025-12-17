@@ -33,7 +33,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_bolt"
-                android:tint="@color/white"
+                android:tint="@color/pastel_dark_yellow"
                 android:layout_marginEnd="12dp"/>
 
             <TextView

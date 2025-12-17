@@ -25,7 +25,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/ic_bolt"
-                android:tint="@color/primary_color"
+                android:tint="@color/pastel_dark_yellow"
                 android:layout_marginBottom="24dp"/>
 
             <!-- App Name -->
@@ -98,7 +98,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Class: CDCD2405C"
+                        android:text="Class: CDCS2405C"
                         android:textSize="16sp"
                         android:textColor="@color/text_color"/>
 
@@ -112,7 +112,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/pastel_yellow">
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
