@@ -44,6 +44,12 @@
             android:label="About"
             android:theme="@style/Theme.ElectricityBillCalculator" />
 
+        <activity
+            android:name=".EditBillActivity"
+            android:exported="false"
+            android:label="Edit Bill"
+            android:theme="@style/Theme.ElectricityBillCalculator" />
+
     </application>
 
 </manifest>

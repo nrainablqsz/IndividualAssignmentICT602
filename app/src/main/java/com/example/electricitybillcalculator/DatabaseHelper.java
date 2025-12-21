@@ -11,7 +11,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "electricity_bills.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Table name and columns
     public static final String TABLE_BILLS = "bills";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_MONTH = "month";
@@ -49,7 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Insert a new bill record
     public long insertBill(String month, double units, double rebate,
                            double totalCharges, double finalCost) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -65,7 +63,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // Get all bills
     public Cursor getAllBills() {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {
@@ -81,7 +78,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_DATE_CREATED + " DESC");
     }
 
-    // Get bill by ID
     public Cursor getBillById(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {
@@ -100,7 +96,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null);
     }
 
-    // Delete a bill
+    public boolean updateBill(long id, String month, double units, double rebate,
+                              double totalCharges, double finalCost) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_MONTH, month);
+        values.put(COLUMN_UNITS, units);
+        values.put(COLUMN_REBATE, rebate);
+        values.put(COLUMN_TOTAL_CHARGES, totalCharges);
+        values.put(COLUMN_FINAL_COST, finalCost);
+
+        String whereClause = COLUMN_ID + " = ?";
+        String[] whereArgs = {String.valueOf(id)};
+
+        int result = db.update(TABLE_BILLS, values, whereClause, whereArgs);
+        db.close();
+        return result > 0;
+    }
+
     public boolean deleteBill(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = COLUMN_ID + " = ?";

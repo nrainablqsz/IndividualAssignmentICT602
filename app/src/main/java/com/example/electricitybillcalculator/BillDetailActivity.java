@@ -31,7 +31,6 @@ public class BillDetailActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_bill_detail);
 
-        // Get bill ID from intent
         billId = getIntent().getLongExtra("BILL_ID", -1);
         if (billId == -1) {
             Toast.makeText(this, "Invalid bill", Toast.LENGTH_SHORT).show();
@@ -39,16 +38,12 @@ public class BillDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Initialize database helper
         dbHelper = new DatabaseHelper(this);
 
-        // Initialize views
         initViews();
 
-        // Load bill details
         loadBillDetails();
 
-        // Set up back button
         findViewById(R.id.buttonBack).setOnClickListener(v -> finish());
     }
 
@@ -67,7 +62,6 @@ public class BillDetailActivity extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             DecimalFormat df = new DecimalFormat("#,##0.00");
 
-            // Get values from cursor
             String month = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_MONTH));
             double units = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_UNITS));
             double rebate = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_REBATE));
@@ -75,10 +69,8 @@ public class BillDetailActivity extends AppCompatActivity {
             double finalCost = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_FINAL_COST));
             String dateCreated = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DATE_CREATED));
 
-            // Format date
             String formattedDate = formatDate(dateCreated);
 
-            // Update UI
             textViewMonth.setText(month);
             textViewUnits.setText(df.format(units) + " kWh");
             textViewRebate.setText(df.format(rebate) + "%");

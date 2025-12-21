@@ -2,34 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="16dp"
     android:background="?android:attr/selectableItemBackground">
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textViewMonth"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:text="Month"
+        android:textSize="18sp"
+        android:textColor="@color/primary_color"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/textViewMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Month"
-            android:textSize="18sp"
-            android:textColor="@color/primary_color"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textViewUnits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0 kWh"
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="4dp"/>
 
     <TextView
         android:id="@+id/textViewFinalCost"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="RM 0.00"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@color/secondary_color"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
 
 </LinearLayout>

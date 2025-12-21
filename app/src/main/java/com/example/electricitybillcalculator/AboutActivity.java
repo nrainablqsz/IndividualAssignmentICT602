@@ -23,10 +23,8 @@ public class AboutActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_about);
 
-        // Setup bottom navigation
         setupBottomNavigation();
 
-        // Set up GitHub link click listener
         setupGitHubLink();
     }
 
@@ -53,10 +51,8 @@ public class AboutActivity extends AppCompatActivity {
     private void setupGitHubLink() {
         TextView textViewGitHub = findViewById(R.id.textViewGitHub);
 
-        // Make it look like a link (add underline)
         textViewGitHub.setPaintFlags(textViewGitHub.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        // Set click listener
         textViewGitHub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +60,6 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        // Add visual feedback on touch
         textViewGitHub.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -1,5 +1,7 @@
 package com.example.electricitybillcalculator;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -30,42 +32,25 @@ public class HistoryActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_history);
 
-        // Initialize database helper
         dbHelper = new DatabaseHelper(this);
 
-        // Initialize views
         listViewHistory = findViewById(R.id.listViewHistory);
         textViewEmpty = findViewById(R.id.textViewEmpty);
 
-        // Setup bottom navigation
         setupBottomNavigation();
 
-        // Load bills from database
         loadBills();
 
-        // Set up item click listener
         listViewHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) adapter.getItem(position);
                 if (cursor != null) {
                     long billId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                    viewBillDetails(billId);
-                }
-            }
-        });
 
-        // Set up long click listener for delete
-        listViewHistory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) adapter.getItem(position);
-                if (cursor != null) {
-                    long billId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-                    deleteBill(billId);
-                    return true;
+                    // Show action menu (View, Edit, Delete)
+                    showActionMenu(billId);
                 }
-                return false;
             }
         });
     }
@@ -93,7 +78,6 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadBills() {
         Cursor cursor = dbHelper.getAllBills();
 
-        // Check if there are any bills
         if (cursor.getCount() == 0) {
             textViewEmpty.setVisibility(View.VISIBLE);
             listViewHistory.setVisibility(View.GONE);
@@ -103,14 +87,15 @@ public class HistoryActivity extends AppCompatActivity {
         textViewEmpty.setVisibility(View.GONE);
         listViewHistory.setVisibility(View.VISIBLE);
 
-        // Create adapter
         String[] from = {
                 DatabaseHelper.COLUMN_MONTH,
+                DatabaseHelper.COLUMN_UNITS,
                 DatabaseHelper.COLUMN_FINAL_COST
         };
 
         int[] to = {
                 R.id.textViewMonth,
+                R.id.textViewUnits,
                 R.id.textViewFinalCost
         };
 
@@ -124,13 +109,21 @@ public class HistoryActivity extends AppCompatActivity {
         ) {
             @Override
             public void setViewText(TextView v, String text) {
-                if (v.getId() == R.id.textViewFinalCost) {
+                if (v.getId() == R.id.textViewUnits) {
+                    try {
+                        double units = Double.parseDouble(text);
+                        DecimalFormat df = new DecimalFormat("#,##0.00");
+                        v.setText(df.format(units) + " kWh");
+                    } catch (NumberFormatException e) {
+                        v.setText("0 kWh");
+                    }
+                } else if (v.getId() == R.id.textViewFinalCost) {
                     try {
                         double amount = Double.parseDouble(text);
                         DecimalFormat df = new DecimalFormat("#,##0.00");
                         v.setText("RM " + df.format(amount));
                     } catch (NumberFormatException e) {
-                        v.setText(text);
+                        v.setText("RM 0.00");
                     }
                 } else {
                     super.setViewText(v, text);
@@ -141,10 +134,57 @@ public class HistoryActivity extends AppCompatActivity {
         listViewHistory.setAdapter(adapter);
     }
 
+    private void showActionMenu(final long billId) {
+        // Menu options
+        final CharSequence[] options = {"View Details", "Edit Bill", "Delete Bill"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Action");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0: // View Details
+                        viewBillDetails(billId);
+                        break;
+
+                    case 1: // Edit Bill
+                        editBill(billId);
+                        break;
+
+                    case 2: // Delete Bill
+                        confirmDeleteBill(billId);
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
+
     private void viewBillDetails(long billId) {
         Intent intent = new Intent(HistoryActivity.this, BillDetailActivity.class);
         intent.putExtra("BILL_ID", billId);
         startActivity(intent);
+    }
+
+    private void editBill(long billId) {
+        Intent intent = new Intent(HistoryActivity.this, EditBillActivity.class);
+        intent.putExtra("BILL_ID", billId);
+        startActivity(intent);
+    }
+
+    private void confirmDeleteBill(final long billId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Bill");
+        builder.setMessage("Are you sure you want to delete this bill?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteBill(billId);
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     private void deleteBill(long billId) {
@@ -159,7 +199,7 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadBills(); // Refresh when returning to this activity
+        loadBills();
     }
 
     @Override
@@ -167,5 +207,4 @@ public class HistoryActivity extends AppCompatActivity {
         dbHelper.close();
         super.onDestroy();
     }
-
 }
